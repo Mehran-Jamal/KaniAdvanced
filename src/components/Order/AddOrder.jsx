@@ -36,7 +36,6 @@ const AddOrder = () => {
   const [isINVENTORYModalOpen, setIsINVENTORYModalOpen] = useState(false);
   const [selectedINVENTORYData, setSelectedINVENTORYData] = useState(null);
   const [suppId, setsuppId] = useState()
-  const [isLoading, setisLoading] = useState(false)
   const [suppliers, setSuppliers] = useState([
     { id: 1, name: "Supplier A" },
     { id: 2, name: "Supplier B" },
@@ -56,33 +55,6 @@ const AddOrder = () => {
 
   } = useorder();
 
-  useEffect(() => {
-
-     getorderType();
-    getCustomer();
-  
-  }, [])
-  
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setisLoading(true)
-       // Set loading to true when data starts loading
-      await getprodId();
-     
-      setisLoading(false)
-     // Set loading to false once data is loaded
-    };
-
-    fetchData();
-  }, []);
-
-
-
-
-  console.log(productId, "proddidddddd");
-console.log(customer,"customer");
 
   const [selectedSuppliers, setSelectedSuppliers] = useState([]);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -163,7 +135,16 @@ console.log(customer,"customer");
 
 
 
+  useEffect(() => {
+    getorderType();
+    getprodId();
+    getCustomer();
 
+
+
+
+
+  }, [])
 
 
 
@@ -180,10 +161,9 @@ console.log(customer,"customer");
       }));
       setorderTypeOptions(formattedOptions);
     }
-    console.log(productId, "japaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     if (productId) {
-      const formattedProdIdOptions = productId?.map(prodId => ({
+      const formattedProdIdOptions = productId.map(prodId => ({
         value: prodId.id,
         label: prodId?.productId,
         prodIdObject: prodId,
@@ -769,12 +749,12 @@ console.log(customer,"customer");
                           value={prodIdOptions?.find(option => option.value === values.productId?.id) || null}
 
                           onChange={(option) => handleProductIdChange(option, setFieldValue)}
-                          isLoading={isLoading}
-                          options={prodIdOptions||"Loading"}
+
+                          options={prodIdOptions}
                           styles={customStyles}
                           className="bg-white dark:bg-form-Field"
                           classNamePrefix="react-select"
-                          placeholder={isLoading ? 'Loading Products...' : 'Select ProductId'}
+                          placeholder="Select ProductId"
                         />
                         <ErrorMessage name="productId" component="div" className="text-red-600 text-sm" />
                       </div>
@@ -1007,7 +987,7 @@ console.log(customer,"customer");
                                       >
                                         <ReactDatePicker
                                           selected={values.orderProducts[index]?.clientShippingDate || null}
-                                          onChange={(date) => setFieldValue(`orderProducts[${index}].clientShippingDate`, date ? format(date, "yyyy-MM-dd") : "")}
+                                          onChange={(date) => setFieldValue(`orderProducts[${index}].clientShippingDate`, date ? format(date, "yyyy-MM-dd") : "" )}
                                           dateFormat="yyyy-MM-dd"
                                           placeholderText="Enter Client Shipping Date"
                                           className="w-full bg-transparent outline-none"
@@ -1027,7 +1007,7 @@ console.log(customer,"customer");
 
                                         <ReactDatePicker
                                           selected={values.orderProducts[index]?.expectedDate || null}
-                                          onChange={(date) => setFieldValue(`orderProducts[${index}].expectedDate`, date ? format(date, "yyyy-MM-dd") : "")}
+                                          onChange={(date) => setFieldValue(`orderProducts[${index}].expectedDate`,  date ? format(date, "yyyy-MM-dd") : "" )}
                                           dateFormat="yyyy-MM-dd"
                                           placeholderText="Enter Client expected Date"
                                           className="w-full bg-transparent outline-none"
