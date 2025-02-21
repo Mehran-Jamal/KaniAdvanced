@@ -70,22 +70,21 @@ const UpdateOrder = () => {
       const rowIndex = updated.findIndex(
         (row) => row.selectedRowId === selectedRowId
       );
-      console.log(rowIndex,"kkllkkll");
 
       if (rowIndex !== -1) {
         // Update supplierIds for the existing row
-        const supplierExists = updated[2].supplierIds.some(
+        const supplierExists = updated[rowIndex].supplierIds.some(
           (s) => s.supplierId === supplierId
         );
 
         if (supplierExists) {
           // Remove the supplier if already exists
-          updated[2].supplierIds = updated[2].supplierIds.filter(
+          updated[rowIndex].supplierIds = updated[rowIndex].supplierIds.filter(
             (s) => s.supplierId !== supplierId
           );
         } else {
           // Add new supplier to the row
-          updated[1].supplierIds.push({
+          updated[rowIndex].supplierIds.push({
             supplierId,
             supplierName: "", // Optional: default supplier name if needed
           });
